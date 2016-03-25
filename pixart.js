@@ -1,21 +1,29 @@
 var button = document.querySelector("button");
 var brushBox = document.querySelector(".brush");
 var colorBox = document.querySelector("#color-field");
-
-button.addEventListener( "click", function() {
-  event.preventDefault();
-  colorBox.setAttribute("value", "");
-  brushBox.style.background = colorBox.value;
-  paintColor = colorBox.value;
-  return paintColor;
-} );
+var paintColor = "red";
 
 
-for(var i = 0; i < 8000; i++) {
-  var newDiv = document.createElement("div");
-  document.body.appendChild(newDiv);
-  newDiv.className = "square";
-  newDiv.addEventListener("mouseover", function() {
-    this.style.background = colorBox.value;
-  });
-}
+var pixart = {
+  setColor: function () {
+    event.preventDefault();
+    paintColor = colorBox.value;
+    brushBox.style.background = paintColor;
+  },
+
+  paintSquare: function() {
+    this.style.background = paintColor;
+  },
+
+  buildSquares: function() {
+    for(var i = 0; i < 8000; i++) {
+      var newDiv = document.createElement("div");
+      document.body.appendChild(newDiv);
+      newDiv.className = "square";
+      newDiv.addEventListener("mouseover", this.paintSquare);
+    }
+  }
+};
+
+button.addEventListener( "click", pixart.setColor);
+pixart.buildSquares();
